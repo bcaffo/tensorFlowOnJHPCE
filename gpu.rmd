@@ -1,0 +1,66 @@
+---
+title: 'GPU R/Keras'
+author: 'Brian Caffo and Mark Miller'
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(ECHO = FALSE)
+```
+
+First you need to log onto a gpu node.
+
+```
+qrsh -l gpu,mem_free=100G,h_vmem=100G
+```
+
+GPUs are useful for deep learning since you can parallelize arithmetic calculations on the chip. Since it's
+arithmetic calculations and they've optimized the libraries for that, the data transfer is low and the 
+impact of the on-chip parallelization can be quite high.
+
+
+Next you need to load up conda. Conda is a virtual environment for python. A virtual environment is a 
+set of libraries different from the system libraries. So, you can have different versions of libraries
+and different collections of libraries on one system. Conda is one of the more popular virtual environments
+for python. The module load part simply loads up the ability to use conda on the system.
+
+```
+module load conda
+```
+
+The following starts a conda environment for tensorflow.
+```
+source activate tensorflow-gpu-2.0
+```
+
+Now let's check it out
+```
+nvidia-smi
+```
+You get something that looks like this
+```
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 418.67       Driver Version: 418.67       CUDA Version: 10.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla V100-PCIE...  Off  | 00000000:1B:00.0 Off |                    0 |
+| N/A   53C    P0    52W / 250W |  31282MiB / 32480MiB |     29%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  Off  | 00000000:88:00.0 Off |                    0 |
+| N/A   41C    P0    37W / 250W |      0MiB / 32480MiB |      7%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0     34589      C   ...1/.conda/envs/deep_structure/bin/python 31271MiB |
++-----------------------------------------------------------------------------+
+```
+
+
+```
+export CUDA_VISIBLE_DEVICES=0    #or    export CUDA_VISIBLE_DEVICES=1   (to pick an unused GPU)
+```
