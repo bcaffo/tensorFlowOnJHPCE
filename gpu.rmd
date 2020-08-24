@@ -60,7 +60,10 @@ You get something that looks like this
 +-----------------------------------------------------------------------------+
 ```
 
+We currently have 2 GPUs (more to come). You then pick which GPU you want (pick the less used one)
 
 ```
-export CUDA_VISIBLE_DEVICES=0    #or    export CUDA_VISIBLE_DEVICES=1   (to pick an unused GPU)
+export CUDA_VISIBLE_DEVICES=0
+## OR
+export CUDA_VISIBLE_DEVICES=1
 ```
